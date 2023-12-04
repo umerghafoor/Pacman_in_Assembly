@@ -1,0 +1,47 @@
+Microsoft (R) Macro Assembler (x64) Version 14.10.25019.0   07/16/17 21:02:19
+..\examples\ch03\64 bit\AddTwoSum_64.asm		     Page 1 - 1
+
+
+				; AddTwoSum_64.asm - Chapter 3 example.
+
+				ExitProcess proto
+
+ 00000000			.data
+ 00000000			sum qword 0
+	   0000000000000000
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  48/ C7 C0			mov	rax,5
+	   00000005
+ 00000007  48/ 83 C0 06			add	rax,6
+ 0000000B  48/ 89 05			mov   sum,rax
+	   00000000 R
+
+ 00000012  B9 00000000			mov   ecx,0
+ 00000017  E8 00000000 E		call  ExitProcess
+
+ 0000001C			main endp
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.10.25019.0   07/16/17 21:02:19
+..\examples\ch03\64 bit\AddTwoSum_64.asm		     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000001C Public
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+sum  . . . . . . . . . . . . . .	QWord	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors

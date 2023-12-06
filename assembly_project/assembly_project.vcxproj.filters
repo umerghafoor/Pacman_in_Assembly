@@ -19,4 +19,13 @@
       <Filter>Source Files</Filter>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="task1.asn" />
+    <None Include="task2.asn" />
+    <None Include="task3.asn" />
+    <None Include="task4.asn" />
+    <None Include="pacman.asn" />
+    <None Include="backup.asn" />
+    <None Include="sound.asn" />
+  </ItemGroup>
 </Project>

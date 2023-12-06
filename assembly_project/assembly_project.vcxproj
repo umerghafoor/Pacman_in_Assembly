@@ -138,6 +138,15 @@
       <IncludePaths Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Dependencies\irvine;%(IncludePaths)</IncludePaths>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="backup.asn" />
+    <None Include="pacman.asn" />
+    <None Include="sound.asn" />
+    <None Include="task1.asn" />
+    <None Include="task2.asn" />
+    <None Include="task3.asn" />
+    <None Include="task4.asn" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />

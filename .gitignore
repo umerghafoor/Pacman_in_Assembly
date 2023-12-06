@@ -2,3 +2,4 @@
 .vs
 Debug
 x64
+*.asn

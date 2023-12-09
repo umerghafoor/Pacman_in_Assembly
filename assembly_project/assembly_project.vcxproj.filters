@@ -27,5 +27,17 @@
     <None Include="pacman.asn" />
     <None Include="backup.asn" />
     <None Include="sound.asn" />
+    <None Include="pacprint.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="pacman.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="goast.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="data.inc">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -140,6 +140,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="backup.asn" />
+    <None Include="data.inc" />
+    <None Include="goast.inc" />
+    <None Include="pacman.inc" />
+    <None Include="pacprint.inc" />
     <None Include="pacman.asn" />
     <None Include="sound.asn" />
     <None Include="task1.asn" />

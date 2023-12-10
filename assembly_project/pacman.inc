@@ -14,6 +14,7 @@ PacmanCollision PROC USES ebx
 	je HitDotBig
 	CMP boardArray[bx], '@'
 	je HitPortal
+
 	mov CollisionFlag, 0
 	JMP ExitProc
 
@@ -46,11 +47,9 @@ PacmanCollision PROC USES ebx
 	JMP ExitProc
 
 
-	JMP ExitProc
-
 	ExitProc:
 	mov PacCollPos, bx
-	mov boardArray[bx],0
+	mov boardArray[bx],' '
 	ExitProcWall:
 	RET
 PacmanCollision ENDP
@@ -75,3 +74,55 @@ PauseState PROC
 	
 	RET
 PauseState ENDP
+
+hittheGoast PROC uses eax ebx
+	mov eax, 0
+	mov ebx, 0
+
+	mov al, goastPosX
+	cmp PacPosX, al
+	jne notcollideX
+		mov al, goastPosY
+		cmp PacPosY, al
+		jne notcollideX
+
+		INVOKE PlaySound, OFFSET pacman_death, NULL, 0
+
+			cmp score,225
+			jae wonGame
+
+			mov levelup, 0
+			mov PacCollPos, 656
+			mov PacPosX, 24
+			mov PacPosY, 23
+		;goast 
+			mov moveDirection, 0
+			mov goastCollisionFlag, 0
+			mov GoastCollPos, 405
+			mov goastPosX,26
+			mov goastPosY,14
+			add noOfLives,-1
+
+	notcollideX:
+	ret
+
+	wonGame:
+	
+		mov moveDirection, 0
+		mov goastCollisionFlag, 0
+		mov GoastCollPos,405
+		add GoastCollPos,784
+		mov goastPosX,26
+		mov goastPosY,14
+
+		add levelup, 2267
+		mov PacCollPos,656
+		add PacCollPos,785
+		mov PacPosX,26
+		mov PacPosY,23
+
+		add noOfLives,-1
+
+	ret
+
+hittheGoast ENDP

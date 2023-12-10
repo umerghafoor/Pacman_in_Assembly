@@ -3,3 +3,6 @@
 Debug
 x64
 *.asn
+*.obj
+*.log
+*.obj

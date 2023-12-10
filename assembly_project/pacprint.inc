@@ -6,6 +6,7 @@ includelib Winmm.lib
 	pacman_beginning	db 'pacman_beginning.wav',0 
 	pacman_eatfruit	db 'pacman_eatfruit.wav',0 
 	pacman_eatghost	db 'pacman_eatghost.wav',0 
+	pacman_death		db 'pacman_death.wav',0
     
 	PlaySound   PROTO,
 					pszSound:PTR BYTE,
@@ -121,6 +122,26 @@ PrintWon PROC
 	RET 
 PrintWon ENDP
 
+PrintGameOver PROC
+
+	call Clrscr
+	mov eax, 4
+	CALL SetTextColor
+	mov ecx, 23
+	mov edx, OFFSET gameOver1 - 57
+
+	BoardLoop:
+		ADD edx, 57
+		CALL writestring
+		CALL CRLF
+
+		Loop BoardLoop
+
+	INVOKE PlaySound, OFFSET pacman_beginning, NULL, 11h
+	
+	RET 
+PrintGameOver ENDP
+
 
 PrintCurrentScore PROC
 	mov edx, 0
@@ -143,3 +164,14 @@ PrintCurrentLevel PROC
 	call writedec
 	RET
 PrintCurrentLevel ENDP
+
+PrintCurrentLife PROC
+	mov edx, 0
+	mov eax, 0
+	mov dl, 68
+	mov dh, 24
+	CALL GoToXY
+	mov al, noOfLives
+	call writedec
+	RET
+PrintCurrentLife ENDP

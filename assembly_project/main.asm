@@ -1,20 +1,24 @@
 INCLUDE Irvine32.inc
+INCLUDE data.inc
 INCLUDE pacprint.inc
 INCLUDE pacman.inc
 INCLUDE goast.inc
-INCLUDE data.inc
 
 
 .code
 main PROC
 
 	loop1:
+
+	;call PrintGameOver
+	;mov eax,50000
+	;call DELAY
+
 	call PrintIntro
 	cmp userDec,'n'
 	je exitGame
 	
-	mov eax,00
-	call DELAY
+	
 
 	call runGame
 
@@ -32,20 +36,39 @@ runGame PROC
 	mov score,0
 
 	call PrintMazeBoard
-	call SpawnGhosts
 
 	INVOKE PlaySound, OFFSET pacman_beginning, NULL, 11h
 
 	;jmp wonGame
 		mov levelup, 0
-		mov PacCollPos,656
-		mov PacPosX,24
-		mov PacPosY,23
+		mov levelno, 1
+		mov PacCollPos, 656
+		mov PacPosX, 24
+		mov PacPosY, 23
+		mov noOfLives, 3 
+
+	;goast 
+		mov moveDirection, 0
+		mov goastCollisionFlag, 0
+		mov GoastCollPos, 405
+		mov goastPosX,26
+		mov goastPosY,14
+	
 
 	gameLoop:
 		
+
+		call hittheGoast
+
 		cmp fakescore,225
 		je wonGame
+
+		cmp noOfLives, 0
+		jbe lifeGone
+
+		call hittheGoast
+		call runGoast
+
 
 		;Delay
 		mov eax,150
@@ -54,6 +77,7 @@ runGame PROC
 		;Printing the score
 		call PrintCurrentScore
 		call PrintCurrentLevel
+		call PrintCurrentLife
 
 		;check for portals
 		cmp portaHitFlag,1
@@ -95,6 +119,9 @@ runGame PROC
 			CALL PacmanCollision
 			CMP CollisionFlag, 1
 			je oldInputhandeling
+
+			mov eax, 14
+		    CALL SetTextColor
 			mov dh, PacPosY
 			mov dl, PacPosX
 			CALL GoToXY
@@ -113,6 +140,10 @@ runGame PROC
 			CALL PacmanCollision
 			CMP CollisionFlag, 1
 			je oldInputhandeling
+
+			mov eax, 14
+		    CALL SetTextColor
+			
 			mov dh, PacPosY
 			mov dl, PacPosX
 			CALL GoToXY
@@ -130,6 +161,9 @@ runGame PROC
 			CALL PacmanCollision
 			CMP CollisionFlag, 1
 			je oldInputhandeling
+
+			mov eax, 14
+		    CALL SetTextColor
 			mov dh, PacPosY
 			mov dl, PacPosX
 			CALL GoToXY
@@ -147,6 +181,9 @@ runGame PROC
 			CALL PacmanCollision
 			CMP CollisionFlag, 1
 			je oldInputhandeling
+
+			mov eax, 14
+		    CALL SetTextColor
 			mov dh, PacPosY
 			mov dl, PacPosX
 			CALL GoToXY
@@ -163,6 +200,13 @@ runGame PROC
 			mov al, oldinputChar
 			mov inputChar,al
 		jmp gameloop
+
+		lifeGone:
+			call PrintGameOver
+			mov eax,10000
+			call DELAY
+
+		jmp exitGame
 
 		pauseGame:
 			call PauseState
@@ -216,6 +260,13 @@ runGame PROC
 		cmp levelno, 3
 		je wontheWholeGame
 		
+		mov moveDirection, 0
+		mov goastCollisionFlag, 0
+		mov GoastCollPos,405
+		add GoastCollPos,784
+		mov goastPosX,26
+		mov goastPosY,14
+
 		add levelup, 2267
 		mov PacCollPos,656
 		add PacCollPos,785
@@ -233,6 +284,146 @@ runGame PROC
 	exitGame:
 	ret
 runGame ENDP
+
+runGoast PROC uses edx
+	
+
+	;check for portals
+	;cmp portaHitFlag,1
+	;je portalHit
+
+	cmp moveDirection,0
+	je moveUp
+
+	cmp moveDirection,1
+	je moveDown
+
+	cmp moveDirection,2
+	je moveLeft
+
+	cmp moveDirection,3
+	je moveRight
+
+
+	moveUp:
+		mov goastCollVal, -28
+		CALL GoastCollision
+		CMP goastCollisionFlag, 1
+		je takeRandominput
+
+		mov eax, 2
+		CALL SetTextColor
+		mov dh, goastPosY
+		mov dl, goastPosX
+		;dec dh
+		CALL GoToXY
+		mov al, goastFeet
+		CALL writechar
+		
+		mov eax, 5
+		CALL SetTextColor
+		dec goastPosY
+		mov dh, goastPosY
+		mov dl, goastPosX
+		CALL GoToXY
+		mov al, "G"
+		CALL writechar
+			
+		jmp exitGame
+
+	moveDown:
+		mov GoastCollVal, 28
+		CALL GoastCollision
+		CMP goastCollisionFlag, 1
+		je takeRandominput
+
+		mov eax, 2
+		CALL SetTextColor
+		mov dh, goastPosY
+		mov dl, goastPosX
+		;dec dh
+		CALL GoToXY
+		mov al, goastFeet
+		;mov al, " "
+		CALL writechar
+
+		mov eax, 5
+		CALL SetTextColor
+		inc goastPosY
+		mov dh, goastPosY
+		mov dl, goastPosX
+		CALL GoToXY
+		mov al, 'G'
+		CALL writechar
+		jmp exitGame
+
+	moveLeft:
+		mov GoastCollVal, -1
+		CALL GoastCollision
+		CMP goastCollisionFlag, 1
+		je takeRandominput
+
+		mov eax, 2
+		CALL SetTextColor
+		mov dh, goastPosY
+		mov dl, goastPosX
+		;dec dh
+		CALL GoToXY
+		mov al, goastFeet
+		;mov al, " "
+		CALL writechar
+
+		mov eax, 5
+		CALL SetTextColor
+		SUB goastPosX, 2
+		mov dl, goastPosX
+		mov dh, goastPosY
+		CALL GoToXY
+		mov al, 'G'
+		CALL writechar
+	jmp exitGame
+
+	moveRight:
+		mov GoastCollVal, 1
+		CALL GoastCollision
+		CMP goastCollisionFlag, 1
+		je takeRandominput
+
+
+		mov eax, 2
+		CALL SetTextColor
+		mov dh, goastPosY
+		mov dl, goastPosX
+		;dec dh
+		CALL GoToXY
+		mov al, goastFeet
+		;mov al, " "
+		CALL writechar
+
+		mov eax, 5
+		CALL SetTextColor
+		ADD goastPosX,2
+		mov dl, goastPosX
+		mov dh, goastPosY
+		CALL GoToXY
+		mov al, 'G'
+		CALL writechar
+		jmp exitGame
+
+	takeRandominput:
+		mov eax,4
+		call Randomize
+		call RandomRange
+		and eax,11b
+
+		mov moveDirection,2
+		mov moveDirection,al
+
+	
+
+	exitGame:
+	ret
+runGoast ENDP
 
 
 

@@ -27,7 +27,7 @@ This project is an implementation of a simple Pac-Man-like game using x86 assemb
 ### Running the Game
 - Clone the repository:
 ```
-https://github.com/umerghafoor/assembly_project
+git clone https://github.com/umerghafoor/Pacman_in_Assembly
 ```
 - Open the project in your Visual Studio with an assembly language development environment.
 
